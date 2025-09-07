@@ -21,22 +21,6 @@ An interactive web app built with threejs, mediapipe computer vision, web speech
 - **HTML5 Canvas** for visual feedback
 - **JavaScript** for real-time interaction
 
-## Setup for Development
-
-```bash
-# Clone this repository
-git clone https://github.com/collidingScopes/3d-model-playground
-
-# Navigate to the project directory
-cd 3d-model-playground
-
-# Serve with your preferred method (example using Python)
-python -m http.server
-```
-
-Then navigate to `http://localhost:8000` in your browser.
-
-
 ## Credits
 
 - Three.js - https://threejs.org/
