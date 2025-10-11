@@ -172,8 +172,8 @@ function _ts_generator(thisArg, body) {
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/loaders/GLTFLoader.js';
 import { HandLandmarker, FilesetResolver } from 'https://esm.sh/@mediapipe/tasks-vision@0.10.14';
-import { AudioManager } from './audioManager.js'; // Import the AudioManager
-import { SpeechManager } from './SpeechManager.js'; // Import SpeechManager
+import { AudioManager } from './audio-manager.js'; // Import the AudioManager
+import { SpeechManager } from './speech-manager.js'; // Import SpeechManager
 export var Game = /*#__PURE__*/ function() {
     "use strict";
     function Game(renderDiv) {

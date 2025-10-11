@@ -1,4 +1,4 @@
-# Stan Playground
+# Lumo Playground
 
 Control 3D models using hand gestures and voice commands in real-time.
 
