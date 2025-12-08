@@ -9,10 +9,9 @@ An interactive web app built with threejs, mediapipe computer vision, web speech
 - [WIP @custom-avatar] drag/drop a new 3D model onto the page to import it (GLB/GLTF format)
 - [WIP @speech-recognition.js] say "drag", "rotate", "scale", or "animate" to change the interaction mode
 
-### Requirements and permissions
+#### Requirements and permissions
 
-- Modern web browser with WebGL support
-- Camera / microphone access
+Modern web browser with WebGL support & camera / microphone access
 
 ### Technologies
 
