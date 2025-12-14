@@ -634,10 +634,57 @@ export var Game = /*#__PURE__*/ function() {
                                 return [
                                     4,
                                     new Promise(function(resolve, reject) {
-                                        gltfLoader.load('assets/Stan.gltf', function(gltf) {
+                                        var savedCharacter = null;
+                                        try {
+                                            savedCharacter = JSON.parse(localStorage.getItem('lumo_character') || 'null');
+                                        } catch (e) {
+                                            savedCharacter = null;
+                                        }
+
+                                        var savedModel = savedCharacter && typeof savedCharacter.model === 'string' ? savedCharacter.model : null;
+                                        var savedColor = savedCharacter && typeof savedCharacter.color === 'string' ? savedCharacter.color : 'default';
+                                        var useTextured = savedModel && savedColor && savedColor !== 'default';
+                                        var basePath = useTextured ? 'assets/Animated Mech Pack/Textured/glTF/' : 'assets/Animated Mech Pack/Flat Colors/glTF/';
+                                        var modelPath = savedModel ? "".concat(basePath).concat(savedModel, ".gltf") : 'assets/Stan.gltf';
+
+                                        gltfLoader.load(modelPath, function(gltf) {
                                             _this.pandaModel = gltf.scene; // GLTFLoader returns an object with a 'scene' property
                                             _this.animationMixer = new THREE.AnimationMixer(_this.pandaModel);
                                             _this.animationClips = gltf.animations;
+
+                                            // Apply textured color variation if needed (wardrobe uses this convention)
+                                            if (useTextured) {
+                                                var textureLoader = new THREE.TextureLoader();
+                                                var variationTexturePath = "assets/Animated Mech Pack/Textured/Textures/Color Variations/".concat(savedModel, "_").concat(savedColor, "_Texture.png");
+                                                var baseTexturePath = "assets/Animated Mech Pack/Textured/Textures/".concat(savedModel, "_Texture.png");
+
+                                                var applyTextureToModel = function applyTextureToModel(texture) {
+                                                    texture.flipY = false;
+                                                    texture.colorSpace = THREE.SRGBColorSpace;
+                                                    _this.pandaModel.traverse(function(child) {
+                                                        if (child.isMesh && child.material) {
+                                                            if (Array.isArray(child.material)) {
+                                                                child.material.forEach(function(mat) {
+                                                                    mat.map = texture;
+                                                                    mat.needsUpdate = true;
+                                                                });
+                                                            } else {
+                                                                child.material.map = texture;
+                                                                child.material.needsUpdate = true;
+                                                            }
+                                                        }
+                                                    });
+                                                };
+
+                                                textureLoader.load(variationTexturePath, function(tex) {
+                                                    applyTextureToModel(tex);
+                                                }, undefined, function() {
+                                                    textureLoader.load(baseTexturePath, function(tex) {
+                                                        applyTextureToModel(tex);
+                                                    });
+                                                });
+                                            }
+
                                             if (_this.animationClips && _this.animationClips.length) {
                                                 _this.animationClips.forEach(function(clip, index) {
                                                     var action = _this.animationMixer.clipAction(clip);
@@ -684,18 +731,24 @@ export var Game = /*#__PURE__*/ function() {
                                             } else {
                                                 console.log("Stan model has no embedded animations.");
                                             }
-                                            // Scale and position the model
-                                            // These values might need adjustment based on the model's original size and pivot
-                                            var scale = 80; // This scale might need adjustment for Stan model
-                                            _this.pandaModel.scale.set(scale, scale, scale);
-                                            // Position the model: X=center, Y=roughly bottom, Z=in front of hands
+
+                                            // Scale and position the model (match the original Stan behavior)
                                             var sceneHeight = _this.renderDiv.clientHeight;
-                                            _this.pandaModel.position.set(0, sceneHeight * -0.45, -1000); // Updated Z to -1000
+                                            var targetBottom = sceneHeight * -0.45;
+                                            var scale = 80;
+                                            _this.pandaModel.scale.set(scale, scale, scale);
+
+                                            var box = new THREE.Box3().setFromObject(_this.pandaModel);
+                                            var center = box.getCenter(new THREE.Vector3());
+                                            _this.pandaModel.position.x = -center.x;
+                                            _this.pandaModel.position.y = targetBottom - box.min.y;
+                                            _this.pandaModel.position.z = -1000; // In front of hands
+
                                             _this.scene.add(_this.pandaModel);
-                                            console.log("Stan GLTF model loaded and added to scene.");
+                                            console.log("Character GLTF model loaded and added to scene:", modelPath);
                                             resolve();
                                         }, undefined, function(error) {
-                                            console.error('An error occurred while loading the Stan GLTF model:', error); // Updated log
+                                            console.error('An error occurred while loading the character GLTF model:', error);
                                             reject(error);
                                         });
                                     })

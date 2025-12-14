@@ -32,7 +32,28 @@ class WardrobeManager {
         this.animationSelect = document.getElementById('animation-select');
         
         // Initialize
+        const saved = this.getSavedCharacter();
+        if (saved) {
+            if (typeof saved.model === 'string' && this.models.includes(saved.model)) {
+                this.selectedModel = saved.model;
+            }
+            if (typeof saved.color === 'string' && this.colorVariations.includes(saved.color)) {
+                this.selectedColor = saved.color;
+            }
+        }
         this.init();
+    }
+
+    getSavedCharacter() {
+        try {
+            const raw = localStorage.getItem('lumo_character');
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            if (!parsed || typeof parsed !== 'object') return null;
+            return parsed;
+        } catch {
+            return null;
+        }
     }
     
     init() {
@@ -231,6 +252,9 @@ class WardrobeManager {
             }
             
             this.scene.add(this.currentModel);
+
+            // Frame camera/controls so the full character is visible from a front view
+            this.frameModelInView();
             
             // Apply texture if needed
             if (useTextured) {
@@ -246,6 +270,32 @@ class WardrobeManager {
             this.showLoading(false);
             this.showToast('Error loading model. Check console for details.');
         }
+    }
+
+    frameModelInView() {
+        if (!this.currentModel || !this.camera || !this.controls) return;
+
+        const box = new THREE.Box3().setFromObject(this.currentModel);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+
+        const fov = THREE.MathUtils.degToRad(this.camera.fov);
+        const halfHeight = size.y / 2;
+        const halfWidth = size.x / 2;
+
+        const distHeight = halfHeight / Math.tan(fov / 2);
+        const distWidth = halfWidth / (Math.tan(fov / 2) * this.camera.aspect);
+        const distance = Math.max(distHeight, distWidth, 1) * 1.25;
+
+        this.controls.target.copy(center);
+        this.camera.position.set(center.x, center.y, center.z + distance);
+        this.camera.near = Math.max(distance / 100, 0.01);
+        this.camera.far = Math.max(distance * 100, 100);
+        this.camera.updateProjectionMatrix();
+
+        this.controls.minDistance = Math.max(distance * 0.4, 0.5);
+        this.controls.maxDistance = distance * 3;
+        this.controls.update();
     }
     
     loadGLTF(path) {
@@ -431,6 +481,9 @@ class WardrobeManager {
         this.camera.updateProjectionMatrix();
         
         this.renderer.setSize(width, height);
+
+        // Keep the character framed on resize
+        this.frameModelInView();
     }
     
     animate() {

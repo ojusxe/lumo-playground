@@ -43,16 +43,35 @@
     font-size: 2em;
 }
 
-#wardrobe-link {
+#corner-links {
     position: absolute;
-    top: 10px;
+    bottom: 10px;
     right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 200;
+}
+
+#wardrobe-link {
+    position: static;
     text-decoration: none;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #wardrobe-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px black;
+}
+
+#github-link {
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#github-link:hover {
     transform: translateY(-2px);
     box-shadow: 4px 4px 0px black;
 }
