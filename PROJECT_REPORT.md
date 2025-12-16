@@ -90,70 +90,43 @@ This report details the design, implementation, and testing of Lumo Playground, 
 
 ## TABLE OF CONTENTS
 
-**CHAPTER 1: INTRODUCTION**
-1.1 Overview
-1.2 Motivation
-1.3 Problem Statement
-1.4 Objectives
-1.5 Project Scope
-1.6 Report Organization
+Chapter no.      Chapter name                                          Page no. 
+1.	Introduction…………………………………….   7 
+1.1	Overview 
+1.2	Motivation
+1.3	Problem Statement 
+1.4	Objective
+1.5	Scope 
+  
+2.	System Analysis…………………………………. 9 
+2.1	Requirement Analysis
+2.2	Feasibility Study
+2.3	Hardware and Software Requirements
+ 
+3.	System Design…………………………………… 11 
+3.1	System Architecture
+3.2	Module Description
+3.3	Data Flow Diagrams
+3.4	User Interface Design
+ 
+4.	Code of Project……………………………………15 
+4.1	Project Directory Structure
+4.2	Core Implementation
+4.3	Backend Folder Structure 
+4.4	Key Algorithms and Code Snippets
+4.5 Deployment and Branding
 
-**CHAPTER 2: LITERATURE REVIEW & THEORETICAL BACKGROUND**
-2.1 Evolution of Web Graphics (WebGL & Three.js)
-2.2 Computer Vision in the Browser
-2.3 MediaPipe Framework
-2.4 Web Speech API
-2.5 Human-Computer Interaction Trends
+5.	Implementation…………………………………. 31 
+5.1	Testing Strategy
+5.2	Integration Testing
+5.3	Performance Testing 
 
-**CHAPTER 3: SYSTEM ANALYSIS**
-3.1 Requirement Analysis
-    3.1.1 Functional Requirements
-    3.1.2 Non-Functional Requirements
-3.2 Feasibility Study
-    3.2.1 Technical Feasibility
-    3.2.2 Operational Feasibility
-    3.2.3 Economic Feasibility
-3.3 Hardware and Software Requirements
-
-**CHAPTER 4: SYSTEM DESIGN**
-4.1 System Architecture
-4.2 Module Description
-    4.2.1 Game Engine (Main Loop)
-    4.2.2 Hand Tracking Module
-    4.2.3 Speech Recognition Module
-    4.2.4 Wardrobe & Customization Module
-4.3 Data Flow Diagrams
-4.4 User Interface Design
-
-**CHAPTER 5: IMPLEMENTATION DETAILS**
-5.1 Project Directory Structure
-5.2 Core Implementation
-    5.2.1 Setting up the 3D Scene
-    5.2.2 Integrating Hand Tracking
-    5.2.3 Implementing Gesture Logic
-    5.2.4 Voice Command Integration
-    5.2.5 Character Customization Logic
-5.3 Key Algorithms and Code Snippets
-
-**CHAPTER 6: TESTING**
-6.1 Testing Strategy
-6.2 Unit Testing
-6.3 Integration Testing
-6.4 System Testing
-6.5 Performance Testing
-
-**CHAPTER 7: RESULTS AND DISCUSSION**
-7.1 User Interface
-7.2 Gesture Interaction
-7.3 Customization Features
-7.4 Performance Analysis
-
-**CHAPTER 8: CONCLUSION AND FUTURE SCOPE**
-8.1 Conclusion
-8.2 Limitations
-8.3 Future Scope
-
-**REFERENCES**
+6.	Conclusion and Future Scope…………………… 36 
+6.1	User Interface
+6.2	Limitation 
+6.3	Possible Future Enhancements 
+ 
+7.	References…………………………………………  37
 
 ---
 
@@ -195,49 +168,48 @@ The scope of Lumo Playground is defined as a Single-Page Application (SPA) with 
 
 ## 1.6 Report Organization
 The remainder of this report is organized as follows:
-*   **Chapter 2** provides a background on the technologies used.
-*   **Chapter 3** analyzes the system requirements.
-*   **Chapter 4** details the system design and architecture.
-*   **Chapter 5** dives into the code and implementation details.
-*   **Chapter 6** covers the testing methodologies.
-*   **Chapter 7** presents the results with screenshots.
-*   **Chapter 8** concludes the report and discusses future improvements.
+*   **Chapter 2** analyzes the system requirements and feasibility.
+*   **Chapter 3** details the system design and architecture.
+*   **Chapter 4** dives into the code, directory structure, and key algorithms.
+*   **Chapter 5** covers the testing methodologies and performance analysis.
+*   **Chapter 6** concludes the report, discusses limitations, and suggests future improvements.
+*   **Chapter 7** lists the references used in the project.
 
 ---
 
-# CHAPTER 2: LITERATURE REVIEW & THEORETICAL BACKGROUND
+## Theoretical Background
 
-## 2.1 Evolution of Web Graphics (WebGL & Three.js)
+### Evolution of Web Graphics (WebGL & Three.js)
 **WebGL (Web Graphics Library)** is a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. It is based on OpenGL ES 2.0. However, working directly with WebGL is complex and verbose.
 
 **Three.js** is a cross-browser JavaScript library and application programming interface (API) used to create and display animated 3D computer graphics in a web browser. It abstracts the complexity of WebGL, providing a scene graph, cameras, lights, materials, and geometries. In Lumo Playground, Three.js is the backbone of the visual experience, handling the rendering of the mech characters, lighting, and the virtual environment.
 
-## 2.2 Computer Vision in the Browser
+### Computer Vision in the Browser
 Historically, Computer Vision (CV) was the domain of native applications using libraries like OpenCV (C++/Python). Bringing CV to the web was challenging due to performance limitations of JavaScript.
 Recent advancements like **WebAssembly (Wasm)** and **SIMD (Single Instruction, Multiple Data)** support in browsers have changed this. Libraries can now run near-native speeds.
 
-## 2.3 MediaPipe Framework
+### MediaPipe Framework
 **MediaPipe** is an open-source cross-platform framework by Google for building multimodal applied machine learning pipelines.
 *   **Hand Landmarker:** The specific solution used in this project. It utilizes a machine learning model to detect 21 3D landmarks of a hand from a single frame.
 *   **Performance:** It is highly optimized for mobile and web, capable of running at 30+ FPS on standard devices.
 *   **Keypoints:** It provides x, y, z coordinates for points like the wrist, thumb tip, index finger tip, etc., which are crucial for gesture logic.
 
-## 2.4 Web Speech API
+### Web Speech API
 The **Web Speech API** enables incorporating voice data into web apps. It consists of two parts:
 1.  **SpeechSynthesis (Text-to-Speech)**
 2.  **SpeechRecognition (Asynchronous Speech Recognition)**
 Lumo Playground utilizes the `SpeechRecognition` interface to listen for specific keywords. This API processes audio input and returns text transcripts, which the application parses to trigger state changes (e.g., switching from "Drag" mode to "Rotate" mode).
 
-## 2.5 Human-Computer Interaction (HCI) Trends
+### Human-Computer Interaction (HCI) Trends
 The shift towards **Natural User Interfaces (NUI)** focuses on interfaces that are effectively invisible, or become invisible with successive learned interactions. Gesture control is a key component of NUI. By mapping physical hand movements (pinching) to virtual actions (grabbing), the cognitive load on the user is reduced compared to learning abstract keyboard shortcuts.
 
 ---
 
-# CHAPTER 3: SYSTEM ANALYSIS
+# CHAPTER 2: SYSTEM ANALYSIS
 
-## 3.1 Requirement Analysis
+## 2.1 Requirement Analysis
 
-### 3.1.1 Functional Requirements
+### 2.1.1 Functional Requirements
 1.  **Camera Input:** The system must access the user's webcam stream.
 2.  **Hand Detection:** The system must detect one or two hands in the video stream.
 3.  **Landmark Extraction:** The system must extract 21 landmarks per hand.
@@ -256,25 +228,25 @@ The shift towards **Natural User Interfaces (NUI)** focuses on interfaces that a
     *   Preview animations.
     *   Save selection to persistent storage.
 
-### 3.1.2 Non-Functional Requirements
+### 2.1.2 Non-Functional Requirements
 1.  **Performance:** The application should maintain a frame rate of at least 30 FPS for smooth interaction.
 2.  **Latency:** Hand tracking latency should be under 100ms to prevent motion sickness or disconnect.
 3.  **Compatibility:** Must work on Chrome, Edge, and Firefox.
 4.  **Usability:** The UI should be intuitive, with clear feedback (visual and audio) for interactions.
 5.  **Robustness:** The system should handle loss of tracking gracefully (e.g., hand goes out of frame).
 
-## 3.2 Feasibility Study
+## 2.2 Feasibility Study
 
-### 3.2.1 Technical Feasibility
+### 2.2.1 Technical Feasibility
 The project relies on established libraries (Three.js, MediaPipe). The browser environment (V8 engine) is powerful enough to handle the computational load. Therefore, the project is technically feasible.
 
-### 3.2.2 Operational Feasibility
+### 2.2.2 Operational Feasibility
 The application requires no installation. Users only need a browser and a webcam, which are standard on almost all laptops. This ensures high operational feasibility and ease of adoption.
 
-### 3.2.3 Economic Feasibility
+### 2.2.3 Economic Feasibility
 The project utilizes open-source libraries (MIT/Apache licenses). There is no cost for software licenses. The development cost is limited to time and effort. Thus, it is economically feasible.
 
-## 3.3 Hardware and Software Requirements
+## 2.3 Hardware and Software Requirements
 
 **Hardware Requirements:**
 *   **Processor:** Intel Core i3 / AMD Ryzen 3 or better.
@@ -290,9 +262,9 @@ The project utilizes open-source libraries (MIT/Apache licenses). There is no co
 
 ---
 
-# CHAPTER 4: SYSTEM DESIGN
+# CHAPTER 3: SYSTEM DESIGN
 
-## 4.1 System Architecture
+## 3.1 System Architecture
 The system follows a client-side architecture. All processing happens locally in the user's browser, ensuring privacy and low latency.
 
 **High-Level Architecture Diagram:**
@@ -312,34 +284,34 @@ The system follows a client-side architecture. All processing happens locally in
         |  [Audio Manager]                                |
         ---------------------------------------------------
 
-## 4.2 Module Description
+## 3.2 Module Description
 
-### 4.2.1 Game Engine (Game.js)
+### 3.2.1 Game Engine (Game.js)
 This is the central controller. It initializes the Three.js scene, the camera, and the renderer. It runs the main animation loop (`requestAnimationFrame`). In every frame, it:
 1.  Updates the video texture.
 2.  Calls the Hand Tracking module.
 3.  Updates the 3D model position/rotation/scale based on hand data.
 4.  Renders the scene.
 
-### 4.2.2 Hand Tracking Module
+### 3.2.2 Hand Tracking Module
 Integrated within `Game.js`, this module uses `HandLandmarker` from MediaPipe.
 *   **Input:** Video frame.
 *   **Output:** Array of detected hands, each containing 21 landmarks (x, y, z).
 *   **Logic:** It calculates the distance between the Thumb Tip (Index 4) and Index Finger Tip (Index 8). If distance < threshold, `isPinching` is set to true.
 
-### 4.2.3 Speech Recognition Module (SpeechManager.js)
+### 3.2.3 Speech Recognition Module (SpeechManager.js)
 This module wraps the `window.SpeechRecognition` API.
 *   **Event Listeners:** Listens for `onresult`.
 *   **Parsing:** Converts speech to text, normalizes it (lowercase), and checks against a dictionary of commands (`drag`, `rotate`, `scale`, `animate`).
 *   **Callback:** Triggers a state change in the Game Engine when a command is matched.
 
-### 4.2.4 Wardrobe & Customization Module (Wardrobe.js)
+### 3.2.4 Wardrobe & Customization Module (Wardrobe.js)
 A separate page (`wardrobe.html`) managed by `WardrobeManager`.
 *   **Function:** Loads 3D models for preview.
 *   **Texture Swapping:** Applies different texture maps to the model materials based on user selection.
 *   **Persistence:** Saves the selected configuration (Model Name, Color ID) to `localStorage`.
 
-## 4.3 Data Flow
+## 3.3 Data Flow Diagrams
 1.  **Video Stream:** Captured from webcam -> Sent to MediaPipe.
 2.  **Landmark Data:** MediaPipe returns coordinates -> Sent to Game Logic.
 3.  **Interaction Logic:**
@@ -347,7 +319,7 @@ A separate page (`wardrobe.html`) managed by `WardrobeManager`.
     *   *Apply Delta:* Update 3D Model Transform (Position += Delta).
 4.  **Rendering:** Three.js updates the canvas based on new transforms.
 
-## 4.4 User Interface Design
+## 3.4 User Interface Design
 The UI is designed to be minimal and unobtrusive (Heads-Up Display / HUD style).
 *   **Main View:** Full-screen video feed with 3D model overlay.
 *   **Status Indicators:**
@@ -358,9 +330,9 @@ The UI is designed to be minimal and unobtrusive (Heads-Up Display / HUD style).
 
 ---
 
-# CHAPTER 5: IMPLEMENTATION DETAILS
+# CHAPTER 4: CODE OF PROJECT
 
-## 5.1 Project Directory Structure
+## 4.1 Project Directory Structure
 ```
 lumo-playground/
 ├── assets/                 # 3D Models (GLTF) and Textures
@@ -375,9 +347,9 @@ lumo-playground/
 └── wardrobe.js             # Wardrobe logic
 ```
 
-## 5.2 Core Implementation
+## 4.2 Core Implementation
 
-### 5.2.1 Setting up the 3D Scene
+### 4.2.1 Setting up the 3D Scene
 The application uses `THREE.OrthographicCamera` to create a 2D-like overlay effect where the 3D model appears to float on the video feed.
 
 ```javascript
@@ -389,7 +361,7 @@ this.renderer.setSize(width, height);
 // The renderer canvas is placed on top of the video element using CSS absolute positioning.
 ```
 
-### 5.2.2 Integrating Hand Tracking
+### 4.2.2 Integrating Hand Tracking
 We use the `FilesetResolver` and `HandLandmarker` from MediaPipe tasks-vision.
 
 ```javascript
@@ -405,7 +377,7 @@ this.handLandmarker = await HandLandmarker.createFromOptions(vision, {
 });
 ```
 
-### 5.2.3 Implementing Gesture Logic (The Pinch)
+### 4.2.3 Implementing Gesture Logic (The Pinch)
 The core interaction is the "Pinch". We calculate the Euclidean distance between the thumb tip and index tip.
 
 ```javascript
@@ -431,7 +403,7 @@ if (isPinching) {
 }
 ```
 
-### 5.2.4 Voice Command Integration
+### 4.2.4 Voice Command Integration
 The `SpeechManager` listens continuously. When a result is final, it checks for keywords.
 
 ```javascript
@@ -447,7 +419,7 @@ this.recognition.onresult = (event) => {
 };
 ```
 
-### 5.2.5 Character Customization Logic
+### 4.2.5 Character Customization Logic
 The wardrobe loads the saved character from `localStorage` or defaults to 'Stan'.
 
 ```javascript
@@ -470,27 +442,77 @@ const modelPath = saved ? `assets/${saved.model}.gltf` : 'assets/Stan.gltf';
 loader.load(modelPath, (gltf) => { ... });
 ```
 
+
+## 4.3 Backend Folder Structure
+As a client-side Single Page Application (SPA), Lumo Playground does not rely on a traditional backend server (like Node.js or Python) for logic. However, the `assets/` directory functions as a static content repository, organized hierarchically to manage the 3D assets efficiently.
+
+```
+assets/
+├── Animated Mech Pack/
+│   ├── License.txt
+│   ├── Flat Colors/
+│   │   └── ...
+│   └── Textured/
+│       ├── OBJ/
+│       │   ├── George.mtl
+│       │   ├── Leela.mtl
+│       │   ├── Mike.mtl
+│       │   └── Stan.mtl
+│       └── Textures/
+│           └── Color Variations/
+```
+
+## 4.4 Key Algorithms and Code Snippets
+The project relies on several key algorithms to bridge the gap between computer vision and 3D rendering.
+
+**1. Pinch Detection Algorithm:**
+Calculates the Euclidean distance between the thumb tip ($P_4$) and index finger tip ($P_8$).
+$$ D = \sqrt{(x_4 - x_8)^2 + (y_4 - y_8)^2} $$
+If $D < Threshold$, a pinch is registered.
+
+**2. Coordinate Mapping:**
+MediaPipe returns normalized coordinates (0.0 to 1.0). These are mapped to Three.js world coordinates.
+$$ x_{world} = (x_{normalized} - 0.5) \times Width $$
+$$ y_{world} = -(y_{normalized} - 0.5) \times Height $$
+
+## 4.5 Deployment and Branding
+
+### Deployment (GitHub)
+The project is version-controlled using **Git** and hosted on **GitHub**. The deployment is handled via **GitHub Pages**, which serves the static files (HTML, CSS, JS, Assets) directly from the repository.
+*   **Repository:** [GitHub Repo Link]
+*   **Branching Strategy:** `main` branch for production code.
+
+### Live Link
+The application is live and accessible at:
+**[Insert Live Link Here]**
+
+### Branding and Meta Tags
+To ensure a professional appearance and shareability, the application includes:
+*   **Favicon:** A custom icon displayed in the browser tab.
+*   **Meta Tags:** SEO-optimized tags including `description`, `keywords`, and Open Graph (`og:image`, `og:title`) tags for social media previews.
+*   **Responsive Design:** The `viewport` meta tag ensures the application scales correctly on different screen sizes.
+
 ---
 
-# CHAPTER 6: TESTING
+# CHAPTER 5: IMPLEMENTATION
 
-## 6.1 Testing Strategy
+## 5.1 Testing Strategy
 A combination of manual testing and console debugging was used. Since the application relies heavily on physical interaction (gestures) and environmental factors (lighting, noise), automated testing is difficult for the core loop.
 
-## 6.2 Unit Testing
+### Unit Testing
 *   **Audio Manager:** Verified that `playInteractionClickSound()` produces sound only after the specified interval (throttling).
 *   **Storage:** Verified that `localStorage` correctly stores and retrieves JSON strings for character data.
 
-## 6.3 Integration Testing
+## 5.2 Integration Testing
 *   **Hand-Model Interaction:** Tested if the 3D model responds *only* when the pinch gesture is active. Verified that releasing the pinch stops the interaction immediately.
 *   **Voice-UI Interaction:** Verified that saying "Rotate" highlights the "Rotate" button in the UI and changes the internal state `this.interactionMode`.
 
-## 6.4 System Testing
+### System Testing
 *   **Browser Compatibility:** Tested on Chrome (v120+), Edge, and Firefox. Chrome provided the best performance for MediaPipe.
 *   **Lighting Conditions:** Tested in low light vs. bright light. MediaPipe is robust, but extreme darkness causes tracking loss.
 *   **Microphone Noise:** Tested voice commands with background music. The Web Speech API has built-in noise cancellation but struggles in very noisy environments.
 
-## 6.5 Performance Testing
+## 5.3 Performance Testing
 *   **Frame Rate:** Monitored using Chrome DevTools FPS meter.
     *   *Average FPS:* 55-60 FPS on a machine with GTX 1650.
     *   *Bottleneck:* Hand tracking inference takes ~10-15ms per frame.
@@ -498,38 +520,36 @@ A combination of manual testing and console debugging was used. Since the applic
 
 ---
 
-# CHAPTER 7: RESULTS AND DISCUSSION
+# CHAPTER 6: CONCLUSION AND FUTURE SCOPE
 
-## 7.1 User Interface
+## 6.1 User Interface
 The final application presents a clean, augmented reality interface. The user sees themselves, and the 3D character appears to be in the room with them.
 *(Insert Screenshot of Main Playground here: Showing user, 3D model, and UI buttons)*
 
-## 7.2 Gesture Interaction
+### Gesture Interaction
 The pinch gesture proved to be a reliable trigger.
 *   **Drag:** Smooth 1:1 movement.
 *   **Rotate:** Intuitive; moving hand left/right rotates the model around the Y-axis.
 *   **Scale:** Two-handed pinch zoom works effectively, mimicking multi-touch screens.
 
-## 7.3 Customization Features
+### Customization Features
 The Wardrobe page successfully allows users to personalize their experience.
 *(Insert Screenshot of Wardrobe Page here: Showing grid of robots and color options)*
 
-## 7.4 Performance Analysis
+### Performance Analysis
 The application runs smoothly on mid-range hardware. The decision to use `requestAnimationFrame` ensures that the physics and rendering are synchronized with the display refresh rate.
 
 ---
 
-# CHAPTER 8: CONCLUSION AND FUTURE SCOPE
-
-## 8.1 Conclusion
+## Conclusion
 Lumo Playground successfully demonstrates the viability of complex, multimodal interaction on the web. By combining **Three.js** for visuals, **MediaPipe** for perception, and **Web Speech API** for command, we created a system that feels futuristic yet is accessible today. The project met all its primary objectives: real-time tracking, gesture control, and customization. It serves as a strong foundation for future web-based AR applications.
 
-## 8.2 Limitations
+## 6.2 Limitation
 1.  **Single Camera View:** The system lacks depth perception (Z-axis) for the hand relative to the screen, making "pushing" interactions difficult to implement accurately without a depth sensor.
 2.  **Occlusion:** If one hand blocks the other, tracking can fail.
 3.  **Lighting:** Poor lighting significantly degrades hand tracking quality.
 
-## 8.3 Future Scope
+## 6.3 Possible Future Enhancements
 1.  **Multiplayer:** Implementing WebRTC to allow two users to interact with the same model in a shared virtual space.
 2.  **Physics Engine:** Integrating a physics engine (like Cannon.js) to allow the model to collide with virtual objects or "fall" on the user's hand.
 3.  **Custom Model Upload:** Fully implementing the drag-and-drop feature to allow users to upload their own `.glb` files.
@@ -537,7 +557,7 @@ Lumo Playground successfully demonstrates the viability of complex, multimodal i
 
 ---
 
-# REFERENCES
+# CHAPTER 7: REFERENCES
 
 1.  **Three.js Documentation.** (n.d.). Retrieved from https://threejs.org/docs/
 2.  **MediaPipe Hands.** (n.d.). Google Developers. Retrieved from https://developers.google.com/mediapipe/solutions/vision/hand_landmarker
