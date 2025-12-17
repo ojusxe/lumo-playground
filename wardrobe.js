@@ -138,6 +138,7 @@ class WardrobeManager {
         });
         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
         ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.5; // Lower the platform
         ground.receiveShadow = true;
         this.scene.add(ground);
     }
@@ -307,9 +308,11 @@ class WardrobeManager {
 
         const distHeight = halfHeight / Math.tan(fov / 2);
         const distWidth = halfWidth / (Math.tan(fov / 2) * this.camera.aspect);
-        const distance = Math.max(distHeight, distWidth, 1) * 1.25;
+        const distance = Math.max(distHeight, distWidth, 1) * 1.4; // Optimal distance for full view
 
-        this.controls.target.copy(center);
+        // Target the model's upper body to center it properly
+        const targetY = center.y + size.y * 0.1; // Target slightly above center
+        this.controls.target.set(center.x, targetY, center.z);
         this.camera.position.set(center.x, center.y, center.z + distance);
         this.camera.near = Math.max(distance / 100, 0.01);
         this.camera.far = Math.max(distance * 100, 100);
