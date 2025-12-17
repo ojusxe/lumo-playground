@@ -69,7 +69,7 @@ class WardrobeManager {
     setupThreeJS() {
         // Scene
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x1a1a2e);
+        this.scene.background = new THREE.Color(0x1a1a1a);
         
         // Camera
         const aspect = this.previewContainer.clientWidth / this.previewContainer.clientHeight;
@@ -132,7 +132,7 @@ class WardrobeManager {
     addGround() {
         const groundGeometry = new THREE.CircleGeometry(5, 32);
         const groundMaterial = new THREE.MeshStandardMaterial({
-            color: 0x222244,
+            color: 0x2a2a2a,
             roughness: 0.8,
             metalness: 0.2
         });
@@ -194,6 +194,28 @@ class WardrobeManager {
         document.querySelectorAll('.color-card').forEach(card => {
             card.classList.toggle('selected', card.dataset.color === this.selectedColor);
         });
+        
+        // Update color thumbnails based on selected model
+        this.updateColorThumbnails();
+    }
+    
+    updateColorThumbnails() {
+        const model = this.selectedModel;
+        const basePath = 'assets/Animated Mech Pack/Textured/Textures';
+        
+        // Default color thumbnail
+        const defaultThumb = document.getElementById('color-default');
+        if (defaultThumb) {
+            defaultThumb.src = `${basePath}/${model}_Texture.png`;
+        }
+        
+        // Color variations 1-4
+        for (let i = 1; i <= 4; i++) {
+            const thumb = document.getElementById(`color-${i}`);
+            if (thumb) {
+                thumb.src = `${basePath}/Color Variations/${model}_${i}_Texture.png`;
+            }
+        }
     }
     
     async loadModel(modelName, colorVariation) {

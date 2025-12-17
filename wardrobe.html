@@ -44,7 +44,7 @@
             <!-- Header -->
             <header id="wardrobe-header">
                 <a href="index.html" class="back-link text-box">← Back to Playground</a>
-                <h1 class="text-box">Character Wardrobe</h1>
+                <h1 class="page-title text-box">🎨 Character Wardrobe</h1>
             </header>
 
             <!-- Main content area -->
@@ -53,69 +53,69 @@
                 <div id="customization-panel">
                     <!-- Model Selection -->
                     <section id="model-section">
-                        <h2 class="section-title text-box">Choose Model</h2>
+                        <h2 class="section-title">Choose Model</h2>
                         <div id="model-grid">
                             <button class="model-card" data-model="George">
-                                <div class="model-icon">🤖</div>
-                                <span>George</span>
+                                <img class="model-thumbnail" src="assets/Animated Mech Pack/Textured/Textures/George_Texture.png" alt="George">
+                                <span class="model-name">George</span>
                             </button>
                             <button class="model-card" data-model="Leela">
-                                <div class="model-icon">🤖</div>
-                                <span>Leela</span>
+                                <img class="model-thumbnail" src="assets/Animated Mech Pack/Textured/Textures/Leela_Texture.png" alt="Leela">
+                                <span class="model-name">Leela</span>
                             </button>
                             <button class="model-card" data-model="Mike">
-                                <div class="model-icon">🤖</div>
-                                <span>Mike</span>
+                                <img class="model-thumbnail" src="assets/Animated Mech Pack/Textured/Textures/Mike_Texture.png" alt="Mike">
+                                <span class="model-name">Mike</span>
                             </button>
                             <button class="model-card" data-model="Stan">
-                                <div class="model-icon">🤖</div>
-                                <span>Stan</span>
+                                <img class="model-thumbnail" src="assets/Animated Mech Pack/Textured/Textures/Stan_Texture.png" alt="Stan">
+                                <span class="model-name">Stan</span>
                             </button>
                         </div>
                     </section>
 
                     <!-- Color Variation Selection -->
                     <section id="color-section">
-                        <h2 class="section-title text-box">Color Variation</h2>
+                        <h2 class="section-title">Color Variation</h2>
                         <div id="color-grid">
                             <button class="color-card" data-color="default">
-                                <div class="color-preview default"></div>
+                                <img class="color-thumbnail" id="color-default" src="" alt="Default">
                                 <span>Default</span>
                             </button>
                             <button class="color-card" data-color="1">
-                                <div class="color-preview variation-1"></div>
-                                <span>Variation 1</span>
+                                <img class="color-thumbnail" id="color-1" src="" alt="Variation 1">
+                                <span>V1</span>
                             </button>
                             <button class="color-card" data-color="2">
-                                <div class="color-preview variation-2"></div>
-                                <span>Variation 2</span>
+                                <img class="color-thumbnail" id="color-2" src="" alt="Variation 2">
+                                <span>V2</span>
                             </button>
                             <button class="color-card" data-color="3">
-                                <div class="color-preview variation-3"></div>
-                                <span>Variation 3</span>
+                                <img class="color-thumbnail" id="color-3" src="" alt="Variation 3">
+                                <span>V3</span>
                             </button>
                             <button class="color-card" data-color="4">
-                                <div class="color-preview variation-4"></div>
-                                <span>Variation 4</span>
+                                <img class="color-thumbnail" id="color-4" src="" alt="Variation 4">
+                                <span>V4</span>
                             </button>
                         </div>
                     </section>
 
                     <!-- Animation Preview -->
                     <section id="animation-section">
-                        <h2 class="section-title text-box">Preview Animation</h2>
+                        <h2 class="section-title">Preview Animation</h2>
                         <div id="animation-controls">
-                            <select id="animation-select" class="text-box">
+                            <select id="animation-select" class="control-select">
                                 <option value="">Loading animations...</option>
                             </select>
-                            <button id="play-animation" class="action-btn text-box">▶ Play</button>
+                            <button id="play-animation" class="action-btn">▶ Play</button>
                         </div>
                     </section>
 
                     <!-- Action Buttons -->
                     <section id="action-section">
-                        <button id="save-character" class="action-btn primary text-box">💾 Save Character</button>
-                        <button id="use-character" class="action-btn success text-box">✓ Use in Playground</button>
+                        <button id="save-character" class="action-btn primary">💾 Save Character</button>
+                        <button id="use-character" class="action-btn success">✓ Use in Playground</button>
                     </section>
                 </div>
 
@@ -125,9 +125,14 @@
                         <div id="loading-indicator" class="text-box">Loading model...</div>
                     </div>
                     <div id="preview-controls">
-                        <span class="text-box">🖱️ Drag to rotate • Scroll to zoom</span>
+                        <span class="hint-text">🖱️ Drag to rotate • Scroll to zoom</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Footer Links -->
+            <div id="corner-links">
+                <a id="github-link" href="https://github.com/ojusxe" class="text-box" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
         </div>
 
