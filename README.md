@@ -2,7 +2,7 @@
 
 7th semester minor project @BTech @IKGPTU @CS
 Control 3D models using hand gestures and voice commands in real-time.
-![lumo's playground](lumo-playground.png)
+![lumo's playground](assets/lumo-playground.png)
 
 <br />
 An interactive web app built with threejs, mediapipe computer vision, web speech API, and rosebud AI. While most applications of computer vision technologies like OpenCV have been through Python bindings, this project demonstrates the power and accessibility of JavaScript bindings for the same advanced computer vision capabilities, bringing real-time hand tracking directly to web browsers without additional installations.

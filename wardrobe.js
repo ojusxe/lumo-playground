@@ -30,6 +30,15 @@ class WardrobeManager {
         this.previewContainer = document.getElementById('preview-canvas-container');
         this.loadingIndicator = document.getElementById('loading-indicator');
         this.animationSelect = document.getElementById('animation-select');
+        this.customizationPanel = document.getElementById('customization-panel');
+        this.previewPanel = document.getElementById('preview-panel');
+        this.wardrobeMain = document.getElementById('wardrobe-main');
+        this.toggleButton = document.getElementById('toggle-panel');
+        this.panelVisible = true;
+        
+        // Pan drag state
+        this.isPanning = false;
+        this.panStart = { x: 0, y: 0 };
         
         // Initialize
         const saved = this.getSavedCharacter();
@@ -174,15 +183,20 @@ class WardrobeManager {
             }
         });
         
-        // Save character
-        document.getElementById('save-character').addEventListener('click', () => {
-            this.saveCharacter();
-        });
-        
         // Use in playground
         document.getElementById('use-character').addEventListener('click', () => {
             this.useInPlayground();
         });
+        
+        // Right-click drag for panning (Windows 3D Viewer style)
+        this.renderer.domElement.addEventListener('mousedown', (e) => this.onCanvasMouseDown(e));
+        this.renderer.domElement.addEventListener('mousemove', (e) => this.onCanvasMouseMove(e));
+        this.renderer.domElement.addEventListener('mouseup', (e) => this.onCanvasMouseUp(e));
+        this.renderer.domElement.addEventListener('mouseleave', (e) => this.onCanvasMouseLeave(e));
+        this.renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+        
+        // Toggle panel visibility
+        this.toggleButton.addEventListener('click', () => this.togglePanel());
     }
     
     updateSelectionUI() {
@@ -471,6 +485,84 @@ class WardrobeManager {
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 1000);
+    }
+    
+    onCanvasMouseDown(e) {
+        // Right-click (button 2) or Shift+Left-click enables panning
+        if (e.button === 2 || (e.button === 0 && e.shiftKey)) {
+            this.isPanning = true;
+            this.panStart.x = e.clientX;
+            this.panStart.y = e.clientY;
+            
+            // Disable OrbitControls during panning
+            if (this.controls) {
+                this.controls.enabled = false;
+            }
+            e.preventDefault();
+        }
+    }
+    
+    onCanvasMouseMove(e) {
+        if (!this.isPanning || !this.camera) return;
+        
+        const deltaX = e.clientX - this.panStart.x;
+        const deltaY = e.clientY - this.panStart.y;
+        
+        // Pan camera/target based on drag (like Windows 3D Viewer)
+        const sensitivity = 0.005;
+        const panX = -deltaX * sensitivity;
+        const panY = deltaY * sensitivity;
+        
+        // Move both camera and controls target
+        this.camera.position.x += panX;
+        this.camera.position.y += panY;
+        this.controls.target.x += panX;
+        this.controls.target.y += panY;
+        
+        // Update pan start for next frame
+        this.panStart.x = e.clientX;
+        this.panStart.y = e.clientY;
+    }
+    
+    onCanvasMouseUp(e) {
+        this.isPanning = false;
+        
+        // Re-enable OrbitControls
+        if (this.controls) {
+            this.controls.enabled = true;
+        }
+    }
+    
+    onCanvasMouseLeave(e) {
+        this.isPanning = false;
+        
+        // Re-enable OrbitControls
+        if (this.controls) {
+            this.controls.enabled = true;
+        }
+    }
+    
+    togglePanel() {
+        this.panelVisible = !this.panelVisible;
+        
+        if (this.panelVisible) {
+            // Show panel
+            this.customizationPanel.classList.remove('hidden');
+            this.previewPanel.classList.remove('fullscreen');
+            this.wardrobeMain.classList.remove('fullscreen-preview');
+            this.toggleButton.textContent = '☰';
+            this.toggleButton.title = 'Hide control panel';
+        } else {
+            // Hide panel
+            this.customizationPanel.classList.add('hidden');
+            this.previewPanel.classList.add('fullscreen');
+            this.wardrobeMain.classList.add('fullscreen-preview');
+            this.toggleButton.textContent = '⊞';
+            this.toggleButton.title = 'Show control panel';
+        }
+        
+        // Trigger a resize to adjust the renderer
+        setTimeout(() => this.onResize(), 0);
     }
     
     showLoading(show) {
